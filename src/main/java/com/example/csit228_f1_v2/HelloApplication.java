@@ -21,8 +21,10 @@ import javafx.scene.text.TextAlignment;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.*;
 
 public class HelloApplication extends Application {
+    static Integer CurrentUID;
     @Override
     public void start(Stage stage) throws IOException {
 //        FXMLLoader fxmlLoader = new FXMLLoader(HelloApplication.class.getResource("login-view.fxml"));
@@ -106,16 +108,65 @@ public class HelloApplication extends Application {
             @Override
             public void handle(ActionEvent actionEvent) {
                 System.out.println("Hello");
-                try {
-                    Parent p = FXMLLoader.load(getClass().getResource("homepage.fxml"));
-                    Scene s = new Scene(p);
-                    stage.setScene(s);
-                    stage.show();
+                //read password
+                try (Connection c = MySqlConnection.getConnection();
+                     PreparedStatement statement = c.prepareStatement(
+                             "SELECT * FROM users WHERE name=? AND password=?")){
+
+                    String username = tfUsername.getText();
+                    String password = pfPassword.getText();
+                    statement.setString(1 , username);
+                    statement.setString(2, password);
+                    ResultSet set = statement.executeQuery();
+                    if(set.next()){
+                        CurrentUID = set.getInt(1);
+                        txtWelcome.setText("Welcome " + set.getString(2));
+                        Parent p = FXMLLoader.load(getClass().getResource("homepage.fxml"));
+                        Scene s = new Scene(p);
+                        stage.setScene(s);
+                        stage.show();
+                    }else{
+                        System.out.println("Invalid Credentials");
+                    }
+
                 } catch (IOException e) {
+                    e.printStackTrace();
+                }catch (SQLException e){
                     e.printStackTrace();
                 }
             }
         });
+
+        //Create Sign button
+        Button btnSignIn = new Button("Sign In");
+        btnSignIn.setFont(Font.font(40));
+        grid.add(btnSignIn, 1, 3, 2, 1);
+
+        btnSignIn.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent actionEvent) {
+                System.out.println("Hello");
+                //createAccount
+                try (Connection c = MySqlConnection.getConnection();
+                     PreparedStatement statement = c.prepareStatement(
+                             "INSERT INTO users (name, password) VALUE (?, ?)"
+                     )){
+
+                    String username = tfUsername.getText();
+                    String password = pfPassword.getText();
+                    statement.setString(1 , username);
+                    statement.setString(2, password);
+                    int rows = statement.executeUpdate();
+                    System.out.print("Rows inserted: " + rows);
+
+
+                }catch(SQLException e){
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        //end of my stuff
 
         Scene scene = new Scene(grid, 700, 500, Color.BLACK);
         stage.setScene(scene);
