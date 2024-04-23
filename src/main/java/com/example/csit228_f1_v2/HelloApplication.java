@@ -9,6 +9,7 @@ import javafx.geometry.Pos;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseDragEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.GridPane;
@@ -57,6 +58,7 @@ public class HelloApplication extends Application {
 
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
+        ImageView logo = new ImageView("file:///src/main/resources/images/Logo.png");
         Text txtWelcome = new Text("Welcome to CIT");
         txtWelcome.setFont(Font.font("Chiller", FontWeight.EXTRA_BOLD, 69));
         txtWelcome.setFill(Color.RED);
@@ -168,11 +170,13 @@ public class HelloApplication extends Application {
         btnSignIn.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent actionEvent) {
+                int userID = 0;
                 System.out.println("Hello");
                 //createAccount
                 try (Connection c = MySqlConnection.getConnection();
                      PreparedStatement statement = c.prepareStatement(
-                             "INSERT INTO users (name, password) VALUE (?, ?)"
+                             "INSERT INTO users (name, password) VALUE (?, ?)",
+                             PreparedStatement.RETURN_GENERATED_KEYS
                      )){
 
                     String username = tfUsername.getText();
@@ -180,9 +184,28 @@ public class HelloApplication extends Application {
                     statement.setString(1 , username);
                     statement.setString(2, password);
                     int rows = statement.executeUpdate();
-                    System.out.print("Rows inserted: " + rows);
 
+                    //get id of new user
+                    if(rows == 1){
+                        ResultSet newUserID = statement.getGeneratedKeys();
 
+                        if (newUserID.next()) {
+                            userID = newUserID.getInt(1);
+                        }
+                    }
+                }catch(SQLException e){
+                    e.printStackTrace();
+                }
+
+                //initialize the player's account
+                try (Connection c = MySqlConnection.getConnection();
+                     PreparedStatement statement = c.prepareStatement(
+                             "INSERT INTO playerclan (SamuraiUnit, owner) VALUE (?, ?)"
+                     )){
+
+                    statement.setString(1 , "Yari");
+                    statement.setInt(2, userID);
+                    statement.execute();
                 }catch(SQLException e){
                     e.printStackTrace();
                 }
