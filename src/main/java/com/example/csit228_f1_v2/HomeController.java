@@ -13,25 +13,18 @@ public class HomeController {
     public Slider slSlider;
     public ProgressBar pbProgress;
     public TextField tfNewUsername;
+    public Button btnDeploy;
+    public Button btnAttack;
 
-    public void onSliderChange() {
-        double val = slSlider.getValue();
-        System.out.println(val);
-        piProgress.setProgress(val/100);
-        pbProgress.setProgress(val/100);
-        if (val == 100) {
-            System.exit(0);
-        }
-    }
+    public RadioButton rbtnKatana;
+    public RadioButton rbtnYari;
+    public RadioButton rbtnCav;
 
-    public void onNightModeClick() {
-        if (tbNight.isSelected()) {
-            tbNight.getParent().setStyle("-fx-background-color: BLACK");
-            tbNight.setText("DAY");
-        } else {
-            tbNight.getParent().setStyle("-fx-background-color: WHITE");
-            tbNight.setText("NIGHT");
-        }
+// TODO: add RadioButtons to scene
+
+
+    public void onDeploy() {
+        System.out.println("Deploying ...");
     }
 
     public void onChangeUsername(){

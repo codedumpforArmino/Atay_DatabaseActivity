@@ -1,32 +1,115 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.scene.chart.*?>
+<?import javafx.geometry.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" style="-fx-background-color: BLACK;" xmlns="http://javafx.com/javafx/17.0.2-ea" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.csit228_f1_v2.HomeController">
+<AnchorPane prefHeight="499.0" prefWidth="893.0" style="-fx-background-color: BLACK;" xmlns="http://javafx.com/javafx/11.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.csit228_f1_v2.HomeController">
    <children>
-      <ComboBox layoutX="84.0" layoutY="76.0" prefWidth="150.0" />
-      <ChoiceBox layoutX="84.0" layoutY="124.0" prefWidth="150.0" />
-      <ImageView fitHeight="150.0" fitWidth="200.0" layoutX="386.0" layoutY="26.0" pickOnBounds="true" preserveRatio="true" />
-      <ProgressBar fx:id="pbProgress" layoutX="252.0" layoutY="334.0" prefWidth="200.0" progress="0.33" />
-      <ProgressIndicator fx:id="piProgress" layoutX="473.0" layoutY="314.0" progress="0.9" />
-      <Spinner layoutX="85.0" layoutY="175.0" />
-      <SplitMenuButton layoutX="84.0" layoutY="33.0" mnemonicParsing="false" text="SplitMenuButton">
-        <items>
-          <MenuItem mnemonicParsing="false" text="Action 1" />
-          <MenuItem mnemonicParsing="false" text="Action 2" />
-        </items>
-      </SplitMenuButton>
-      <Slider fx:id="slSlider" layoutX="352.0" layoutY="69.0" onMouseDragged="#onSliderChange" value="90.0" />
-      <ToggleButton fx:id="tbNight" layoutX="466.0" layoutY="20.0" mnemonicParsing="false" onAction="#onNightModeClick" text="Night Mode" />
-      <TreeView layoutX="386.0" layoutY="100.0" prefHeight="200.0" prefWidth="200.0" />
-      <PieChart layoutX="200.0" layoutY="175.0" prefHeight="129.0" prefWidth="149.0" />
-      <Text fx:id="txtWelcome" fill="#0009ff" layoutX="73.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome " />
-      <TextField fx:id="tfNewUsername" layoutX="75.0" layoutY="250.0" />
-      <Button id="btnChangeUsername" layoutX="74.0" layoutY="288.0" mnemonicParsing="false" text="Change Username" />
-      <Button id="btnDeleteAccount" layoutX="73.0" layoutY="322.0" mnemonicParsing="false" text="Delete Account" />
+      <ImageView fitHeight="523.0" fitWidth="892.0" layoutX="1.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true">
+         <image>
+            <Image url="@../../../images/HomeBG.jpeg" />
+         </image></ImageView>
+      <VBox layoutX="2.0" layoutY="14.0" prefHeight="200.0" prefWidth="100.0">
+         <children>
+            <TextFlow prefHeight="200.0" prefWidth="200.0" textAlignment="CENTER">
+               <children>
+                  <Text fx:id="txtWelcome" fill="#ffcc00" strokeType="OUTSIDE" strokeWidth="0.0" text="Choose your Samurai">
+                     <font>
+                        <Font name="Ebrima" size="25.0" />
+                     </font>
+                  </Text>
+               </children>
+            </TextFlow>
+            <HBox prefHeight="119.0" prefWidth="539.0">
+               <children>
+                  <Separator opacity="0.0" prefWidth="200.0" />
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../images/KatanaSamurai.png" />
+                           </image>
+                        </ImageView>
+                        <RadioButton fx:id="rbtnKatana" mnemonicParsing="false" text="Katana">
+                           <toggleGroup>
+                              <ToggleGroup fx:id="SamuraiType" />
+                           </toggleGroup></RadioButton>
+                     </children>
+                  </VBox>
+                  <Separator opacity="0.0" prefWidth="200.0" />
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../images/YariSamurai.png" />
+                           </image>
+                        </ImageView>
+                        <RadioButton fx:id="rbtnYari" mnemonicParsing="false" text="Yari" textAlignment="CENTER" toggleGroup="$SamuraiType" />
+                     </children>
+                  </VBox>
+                  <Separator opacity="0.0" prefWidth="200.0" />
+                  <VBox prefHeight="200.0" prefWidth="100.0">
+                     <children>
+                        <ImageView fitHeight="150.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../../images/CavalrySamurai.png" />
+                           </image>
+                        </ImageView>
+                        <RadioButton fx:id="rbtnCav" mnemonicParsing="false" text="Cavalry" toggleGroup="$SamuraiType" />
+                     </children>
+                  </VBox>
+                  <Separator opacity="0.0" prefWidth="200.0" />
+               </children>
+            </HBox>
+            <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Separator opacity="0.0" prefWidth="200.0" />
+                  <Button fx:id="btnDeploy" alignment="CENTER" mnemonicParsing="false" onMouseClicked="#onDeploy" prefHeight="25.0" prefWidth="152.0" text="Deploy" textAlignment="CENTER" />
+                  <Separator opacity="0.0" prefWidth="200.0" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <VBox layoutX="347.0" layoutY="14.0" prefHeight="200.0" prefWidth="200.0">
+         <children>
+            <TextFlow prefHeight="200.0" prefWidth="200.0" textAlignment="CENTER">
+               <children>
+                  <Text fx:id="txtWelcome2" fill="#ffcc00" strokeType="OUTSIDE" strokeWidth="0.0" text="Pick an enemy">
+                     <font>
+                        <Font name="Ebrima" size="25.0" />
+                     </font>
+                  </Text>
+               </children>
+            </TextFlow>
+            <ChoiceBox fx:id="cmbAttackList" prefWidth="150.0">
+               <opaqueInsets>
+                  <Insets />
+               </opaqueInsets>
+               <VBox.margin>
+                  <Insets left="25.0" />
+               </VBox.margin></ChoiceBox>
+            <Separator opacity="0.0" orientation="VERTICAL" prefHeight="200.0" />
+            <HBox prefHeight="100.0" prefWidth="200.0">
+               <children>
+                  <Separator opacity="0.0" prefWidth="200.0" />
+                  <Button fx:id="btnAttack" alignment="CENTER" minWidth="-Infinity" mnemonicParsing="false" prefHeight="25.0" prefWidth="80.0" text="Attack" textAlignment="CENTER" />
+                  <Separator opacity="0.0" prefWidth="200.0" />
+               </children>
+            </HBox>
+         </children>
+      </VBox>
+      <TextField fx:id="tfNewUsername" layoutX="422.0" layoutY="288.0" />
+      <Button id="btnChangeUsername" layoutX="421.0" layoutY="326.0" mnemonicParsing="false" text="Change Username" />
+      <Button id="btnDeleteAccount" layoutX="420.0" layoutY="360.0" mnemonicParsing="false" text="Delete Account" />
+      <Text fx:id="txtWelcome1" fill="#ffcc00" layoutX="699.0" layoutY="41.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Report Log">
+         <font>
+            <Font name="Ebrima" size="25.0" />
+         </font>
+      </Text>
+      <TextArea fx:id="txtaReportLog" layoutX="660.0" layoutY="51.0" prefHeight="200.0" prefWidth="200.0" />
    </children>
 </AnchorPane>

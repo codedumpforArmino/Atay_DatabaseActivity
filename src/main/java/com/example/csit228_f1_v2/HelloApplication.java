@@ -32,6 +32,29 @@ public class HelloApplication extends Application {
 //        stage.setTitle("Hello!");
 //        stage.setScene(scene);
 
+        //Create Table if not exist
+        String query = "CREATE TABLE IF NOT EXISTS users (" +
+                "id INT PRIMARY KEY AUTO_INCREMENT," +
+                "name VARCHAR(50) NOT NULL," +
+                "password VARCHAR(100) NOT NULL)";
+        try(Connection c = MySqlConnection.getConnection()){
+            Statement statement = c.createStatement();
+            statement.execute(query);
+
+            //create another table if not exists
+            query = "CREATE TABLE IF NOT EXISTS PlayerClan (" +
+                    "id INT PRIMARY KEY AUTO_INCREMENT," +
+                    "number_of_wins INT DEFAULT 0," + // Assuming default value is 0
+                    "number_of_losses INT DEFAULT 0," + // Assuming default value is 0
+                    "SamuraiName VARCHAR(50) NOT NULL," +
+                    "Owner INT," + // Foreign key referencing users table
+                    "FOREIGN KEY (Owner) REFERENCES users(id)" +
+                    ")";
+            statement.execute(query);
+        }catch (SQLException e) {
+            e.printStackTrace();
+        }
+
         GridPane grid = new GridPane();
         grid.setAlignment(Pos.CENTER);
         Text txtWelcome = new Text("Welcome to CIT");
