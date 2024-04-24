@@ -6,7 +6,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
 
@@ -15,16 +14,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.Arrays;
 
 import static com.example.csit228_f1_v2.HelloApplication.CurrentUID;
+import static com.example.csit228_f1_v2.HelloApplication.myONlyStage;
 
 public class HomeController {
-
-    public ToggleButton tbNight;
-    public ProgressIndicator piProgress;
-    public Slider slSlider;
-    public ProgressBar pbProgress;
     public TextField tfNewUsername;
     public Button btnDeploy;
     public Button btnAttack;
@@ -38,9 +32,11 @@ public class HomeController {
     public ToggleGroup SamuraiType;
     private String CurrentSamuraiUnit;
 
-// TODO: add RadioButtons to scene
-
+    //Read:
     public void initialize(){
+        //initialize
+
+
         //populate Choice box
         try (Connection c = MySqlConnection.getConnection();
              PreparedStatement statement = c.prepareStatement(
@@ -80,7 +76,7 @@ public class HomeController {
             e.printStackTrace();
         }
     }
-
+    //Update: SamuraiUnit
     public void onDeploy() {
         RadioButton selectedRadioButton = (RadioButton) SamuraiType.getSelectedToggle();
 
@@ -124,7 +120,7 @@ public class HomeController {
         }
 
     }
-
+    //Update: numberofWins or numberofLosses, Read: SamuraiUnit from EnemyPlayer
     public void onAttack() {
         String SelectedPlayer = cmbAttackList.getValue();
         String EnemySamurai;
@@ -214,13 +210,69 @@ public class HomeController {
         cmbAttackList.getItems().remove(selectedIndex);
         cmbAttackList.setValue(null);
     }
-
+    //Delete
     public void onDeleteAccount(){
-        System.out.println("Deleting...");
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Delete Confirmation");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to delete Account?");
+
+        // Display the alert dialog
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                //delete player table
+                try(Connection c = MySqlConnection.getConnection();
+                    PreparedStatement statement = c.prepareStatement(
+                            "DELETE FROM playerclan WHERE owner=?")){
+                    c.setAutoCommit(false);
+
+                    statement.setInt(1, CurrentUID);
+                    int row = statement.executeUpdate();
+                    if(row == 0){
+                        System.out.println("No deleted");
+                        return;
+                    }
+
+                    c.commit();
+                }catch(SQLException e){
+                    e.printStackTrace();
+                }
+
+                //delete user table
+                try(Connection c = MySqlConnection.getConnection();
+                    PreparedStatement statement = c.prepareStatement(
+                            "DELETE FROM users WHERE id=?")){
+                    c.setAutoCommit(false);
+
+                    statement.setInt(1, CurrentUID);
+                    int row = statement.executeUpdate();
+                    if(row == 0){
+                        System.out.println("No deleted");
+                        return;
+                    }
+
+                    c.commit();
+                }catch(SQLException e){
+                    e.printStackTrace();
+                }
+
+                Logout();
+            }else{
+                System.out.println("Cancelling...");
+            }
+        });
     }
 
     public void Logout(){
-        System.out.println("Logging out...");
+        try{
+            Parent root = FXMLLoader.load(getClass().getResource("login-view.fxml"));
+            Scene scene = new Scene(root);
+            myONlyStage.setScene(scene);
+            myONlyStage.show();
+        }catch(IOException e){
+            e.printStackTrace();
+        }
+
     }
 
     public void onChangeUsername(){
@@ -249,7 +301,7 @@ public class HomeController {
         }
     }
 
-    public int compareUnit(String EnemySamurai){
+    public int compareUnit(String EnemySamurai){ //rock paper scissors comparison
         int PlayerIndex = getSamuraiIndex(CurrentSamuraiUnit);
         System.out.println(CurrentSamuraiUnit + " : " + PlayerIndex);
         int EnemyIndex = getSamuraiIndex(EnemySamurai);
