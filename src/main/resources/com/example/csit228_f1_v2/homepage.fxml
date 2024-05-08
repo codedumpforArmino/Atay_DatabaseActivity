@@ -12,6 +12,11 @@
          <image>
             <Image url="@../../../images/HomeBG.jpeg" />
          </image></ImageView>
+      <ScrollPane layoutX="660.0" layoutY="51.0" prefHeight="200.0" prefWidth="200.0">
+        <content>
+           <TextFlow fx:id="txtfReportLog" prefHeight="200.0" prefWidth="200.0" />
+        </content>
+      </ScrollPane>
       <VBox layoutX="2.0" layoutY="14.0" prefHeight="200.0" prefWidth="100.0">
          <children>
             <TextFlow prefHeight="200.0" prefWidth="200.0" textAlignment="CENTER">
@@ -125,7 +130,5 @@
             <Font name="Ebrima" size="25.0" />
          </font>
       </Text>
-      <TextArea layoutX="660.0" layoutY="51.0" prefHeight="200.0" prefWidth="200.0" />
-      <TextFlow fx:id="txtfReportLog" layoutX="660.0" layoutY="51.0" prefHeight="200.0" prefWidth="200.0" />
    </children>
 </AnchorPane>
